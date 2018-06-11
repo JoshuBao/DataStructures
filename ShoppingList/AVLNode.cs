@@ -34,6 +34,31 @@ namespace ShoppingList
             return false;
 
         }
+
+        public void FixHeight()
+        {
+            int leftHeight = 0;
+            int rightHeight = 0;
+            if(Left != null)
+            {
+                leftHeight = Left.Height;
+            }
+            if(Right != null)
+            {
+                rightHeight = Right.Height;
+            }
+
+            Height = Math.Max(leftHeight, rightHeight);
+        }
+
+        //get balance function here
+        public int GetBalance()
+        {
+            int rightHeight = 0;
+            int leftHeight = 0;
+            int balance = rightHeight - leftHeight;
+            return balance;
+        }
   
         
         public AVLNode(T value)
@@ -42,7 +67,7 @@ namespace ShoppingList
             Value = value;
             Left = null;
             Right = null;
-
+            Height = 1;
 
         }
 
