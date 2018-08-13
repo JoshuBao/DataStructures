@@ -10,11 +10,34 @@ namespace ShoppingList
     {
         static void Main(string[] args)
         {
-            
+            //add random numbers to avl tree
+            //print numbers to screen using pre order traversal
 
             Mylist<string> input;
             string userinput = "";
             input = new Mylist<string>();
+            AVLTree<int> Tree;
+            Tree = new AVLTree<int>();
+            Tree.Add(3);
+            Tree.Add(6);
+            Tree.Add(1);
+            Tree.Add(7);
+            Tree.Add(5);
+            Tree.Add(44);
+            Tree.Add(23);
+            Tree.Add(54);
+            Tree.Add(123);
+            Tree.Add(9);
+            Tree.Add(10);
+            Tree.Add(13);
+            Tree.Add(12);
+            Tree.Add(64);
+            Tree.Add(25);
+            Tree.Delete(6);
+            Tree.PreOrder();
+
+
+
             while (true)
             {
                 userinput = Console.ReadLine();

@@ -10,6 +10,7 @@ namespace ShoppingList
     {
         public AVLNode<T> Left;
         public AVLNode<T> Right;
+        public AVLNode<T> Parent;
         public T Value;
         public int Height;
 
@@ -48,27 +49,27 @@ namespace ShoppingList
                 rightHeight = Right.Height;
             }
 
-            Height = Math.Max(leftHeight, rightHeight);
+            Height = Math.Max(leftHeight, rightHeight) + 1;
         }
 
         //get balance function here
         public int GetBalance()
         {
-            int rightHeight = 0;
-            int leftHeight = 0;
+            int rightHeight = Right == null ? 0 : Right.Height;
+            int leftHeight = Left == null ? 0 : Left.Height;
             int balance = rightHeight - leftHeight;
             return balance;
         }
   
         
-        public AVLNode(T value)
+        public AVLNode(T value, AVLNode<T> parent = null)
         {
 
             Value = value;
             Left = null;
             Right = null;
             Height = 1;
-
+            this.Parent = parent;
         }
 
     }
