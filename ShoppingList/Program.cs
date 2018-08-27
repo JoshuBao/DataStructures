@@ -14,33 +14,16 @@ namespace ShoppingList
             //print numbers to screen using pre order traversal
 
             Mylist<string> input;
-            string userinput = "";
+            string userinput = ""; 
             input = new Mylist<string>();
-            AVLTree<int> Tree;
-            Tree = new AVLTree<int>();
+            RedBlackTree<int> Tree;         
+            Tree = new RedBlackTree<int>();
+
+            Tree.Add(4);
             Tree.Add(3);
-            Tree.Add(6);
-            Tree.Add(1);
-            Tree.Add(7);
-            Tree.Add(5);
-            Tree.Add(44);
+            Tree.Add(2);
             Tree.Add(23);
-            Tree.Add(54);
-            Tree.Add(123);
-            Tree.Add(9);
-            Tree.Add(10);
-            Tree.Add(13);
-            Tree.Add(12);
-            Tree.Add(64);
-            Tree.Add(25);
-            Tree.Delete(6);
-            Tree.PreOrder();
-
-
-
-            while (true)
-            {
-                userinput = Console.ReadLine();
+            Tree.Add(52);
 
                 if (userinput == "add")
                 {
