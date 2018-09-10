@@ -23,12 +23,43 @@ namespace ShoppingList
                 Value = value;
                 IsRed = true;
             }
+
+
+            public void PrintPretty(string indent, bool last)
+            {
+
+                Console.Write(indent);
+                if (last)
+                {
+                    Console.Write("└─");
+                    indent += "  ";
+                }
+                else
+                {
+                    Console.Write("├─");
+                    indent += "| ";
+                }
+                Console.WriteLine(Value);
+
+                var children = new List<Node>();
+                if (this.Left != null)
+                    children.Add(this.Left);
+                if (this.Right != null)
+                    children.Add(this.Right);
+
+                for (int i = 0; i < children.Count; i++)
+                {
+                    children[i].PrintPretty(indent, i == children.Count - 1);
+                }
+
+            }
         }
 
         //overloading methods
         public void Add(T value) //
         {
             root = Add(root, value);
+            root.IsRed = false;
         }
 
         //recursivly
@@ -103,11 +134,10 @@ namespace ShoppingList
                 node.Left.IsRed = !node.Left.IsRed;
 
             }
-            else if (node.Right != null)
+            if (node.Right != null)
             {
-                node.Right.IsRed = !node.Left.IsRed;
+                node.Right.IsRed = !node.Right.IsRed;
             }
-
         }
 
         private bool IsBlack(Node node)
@@ -122,10 +152,9 @@ namespace ShoppingList
         //Fixup
         private Node Fixup(Node curr)
         {
-
-            if (curr.Right.IsRed == true)
+            if (!IsBlack(curr.Right))    
             {
-                curr.Right = RotateLeft(curr.Right);
+                curr = RotateLeft(curr);
 
             }
 
@@ -139,13 +168,35 @@ namespace ShoppingList
                 FlipColor(curr);
             }
 
-            if (curr.Left != null && !IsBlack(curr.Left.Right) == true)
+            if (curr.Left != null && IsBlack(curr.Left.Left) && !IsBlack(curr.Left.Right))
             {
                 curr.Left = RotateLeft(curr.Left);
             }
 
         
             return curr;
+        }
+        public void PreOrder()
+        {
+            Function(root);
+
+            void Function(RedBlackTree<T>.Node node)
+            {
+                Console.WriteLine($"{node.Value}");
+                if (node.Left != null)
+                {
+                    Function(node.Left);
+                }
+                if (node.Right != null)
+                {
+                    Function(node.Right);
+                }
+            }
+        }
+
+        public void Print()
+        {
+            root.PrintPretty("", true);
         }
         //void Function(this.Node<T> node)
         //    {
@@ -158,12 +209,12 @@ namespace ShoppingList
         //        {
         //            Function(node.Right);
         //        }
-        //    }
+        //   
         //public void PreOrder()
         //{
         //    Function(root);
 
-            
+
         //}
 
     }
