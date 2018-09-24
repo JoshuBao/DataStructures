@@ -24,7 +24,7 @@ namespace ShoppingList
                 IsRed = true;
             }
 
-
+            #region graphic
             public void PrintPretty(string indent, bool last)
             {
 
@@ -52,9 +52,11 @@ namespace ShoppingList
                     children[i].PrintPretty(indent, i == children.Count - 1);
                 }
 
-            }
-        }
 
+            }
+            #endregion
+        }
+        #region Adding
         //overloading methods
         public void Add(T value) //
         {
@@ -152,7 +154,7 @@ namespace ShoppingList
         //Fixup
         private Node Fixup(Node curr)
         {
-            if (!IsBlack(curr.Right))    
+            if (!IsBlack(curr.Right))
             {
                 curr = RotateLeft(curr);
 
@@ -173,9 +175,11 @@ namespace ShoppingList
                 curr.Left = RotateLeft(curr.Left);
             }
 
-        
+
             return curr;
         }
+        #endregion
+        #region printingETC
         public void PreOrder()
         {
             Function(root);
@@ -198,21 +202,80 @@ namespace ShoppingList
         {
             root.PrintPretty("", true);
         }
-        //void Function(this.Node<T> node)
-        //    {
-        //        Console.WriteLine($"{node.Value}");
-        //        if (node.Left != null)
-        //        {
-        //            Function(node.Left);
-        //        }
-        //        if (node.Right != null)
-        //        {
-        //            Function(node.Right);
-        //        }
-        //   
-        //public void PreOrder()
-        //{
-        //    Function(root);
+        #endregion
+        #region deleting
+        public bool Delete(T value)
+        {
+            int oldCount = Count;
+            root = Delete(root, value);
+            root.IsRed = false;
+            return Count != oldCount;
+        }
+
+        private Node Delete(Node curr, T value)
+        {
+            if(value.CompareTo(curr.Value) < 0)
+            {
+                if(Is2Node(curr.Left))
+                {
+                    curr = MoveRedLeft(curr);
+                }
+
+                curr.Left = Delete(curr.Left, value);
+            }
+            else if(value.CompareTo(curr.Value) > 0 )
+            {
+                if (!IsBlack(curr.Left))
+                {
+
+                    curr.Left = RotateRIght(curr.Left);
+                }
+                
+            }
+            else if (value.CompareTo(curr.Value) == 0 && curr.Left == null && curr.Right == null)
+            {
+
+                curr = Delete(curr,value);
+            }
+            else if (Is2Node(curr.Right))
+            {
+
+
+            }
+        }
+        private Node MoveRedRight(Node curr)
+        {
+            FlipColor(curr);
+            if (curr.Left != null && !IsBlack(curr.Left.Left))
+            {
+                curr = RotateRIght(curr);
+                FlipColor(curr);
+            }
+            return curr;
+        }
+
+        private bool Is2Node(Node node)
+        {
+            if (IsBlack(node) && IsBlack(node.Left))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private Node MoveRedLeft(Node curr)
+        {
+            FlipColor(curr);
+            if (curr.Right != null && !IsBlack(curr.Right.Left))
+            {
+                curr.Right = RotateRIght(curr.Right);
+                curr = RotateLeft(curr);
+                FlipColor(curr);
+            }
+            return curr;
+
+        }
+        #endregion
 
 
         //}
