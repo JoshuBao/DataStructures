@@ -223,8 +223,45 @@ namespace ShoppingList
 
                 curr.Left = Delete(curr.Left, value);
             }
-            else if(value.CompareTo(curr.Value) > 0 )
+            else
             {
+                if (!IsBlack(curr.Left))
+                {
+                    curr = RotateRIght(curr);
+                }
+
+
+                if(curr.Value.CompareTo(value) == 0 && curr.Left == null && curr.Right == null)
+                {
+                    Count--;
+                    return null;
+                }
+
+                if(curr.Right != null)
+                {
+                    if(Is2Node(curr.Right))
+                    {
+                        //move red right
+                        curr = MoveRedRight(curr);
+                    }
+
+                    if(curr.Value.CompareTo(value) == 0)
+                    {
+                        Node temp = curr.Right;
+                        while(temp.Left != null)
+                        {
+                            temp = temp.Left;
+                        }
+                        curr.Value = temp.Value;
+                        Delete(curr.Right,temp.Value);
+                    }
+                    else
+                    {
+                        curr.Right = Delete(curr.Right, value);
+                    }
+                }
+
+
                 if (!IsBlack(curr.Left))
                 {
 
@@ -232,16 +269,9 @@ namespace ShoppingList
                 }
                 
             }
-            else if (value.CompareTo(curr.Value) == 0 && curr.Left == null && curr.Right == null)
-            {
+            
 
-                curr = Delete(curr,value);
-            }
-            else if (Is2Node(curr.Right))
-            {
-
-
-            }
+            return Fixup(curr);
         }
         private Node MoveRedRight(Node curr)
         {
@@ -266,11 +296,17 @@ namespace ShoppingList
         private Node MoveRedLeft(Node curr)
         {
             FlipColor(curr);
-            if (curr.Right != null && !IsBlack(curr.Right.Left))
+            if (!IsBlack(curr.Right.Left))
             {
                 curr.Right = RotateRIght(curr.Right);
                 curr = RotateLeft(curr);
+
                 FlipColor(curr);
+
+                if (!IsBlack(curr.Right.Right))
+                {
+                    curr.Right = RotateLeft(curr.Right);
+                }
             }
             return curr;
 

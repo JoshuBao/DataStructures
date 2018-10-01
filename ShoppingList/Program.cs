@@ -19,10 +19,13 @@ namespace ShoppingList
             RedBlackTree<int> Tree;
             Tree = new RedBlackTree<int>();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1000000; i++)
             {
                 Tree.Add(i);
             }
+
+
+
 
             Tree.Print();
 
