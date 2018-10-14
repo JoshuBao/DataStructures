@@ -16,18 +16,18 @@ namespace ShoppingList
             Mylist<string> input;
             string userinput = "";
             input = new Mylist<string>();
-            RedBlackTree<int> Tree;
-            Tree = new RedBlackTree<int>();
+            HeapTree<int> Tree;
+            Tree = new HeapTree<int>();
 
-            for (int i = 0; i < 1000000; i++)
+            for (int i = 10; i > 0 ; i--)
             {
-                Tree.Add(i);
+                Tree.insert(i);
             }
+            Tree.pop();
 
 
 
-
-            Tree.Print();
+            
 
             Console.ReadKey();
 
