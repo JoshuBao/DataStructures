@@ -12,10 +12,10 @@ namespace ShoppingList
         Random numgen = new Random();
 
         Node Head;
+        public IComparer<T> Comparer { get; private set; }
 
 
-       
-        public int Count{ get;private set;}
+        public int Count { get; private set; }
 
         public bool IsReadOnly => false;
 
@@ -23,7 +23,7 @@ namespace ShoppingList
         private int ChooseRandom(int max)
         {
             int height = 1;
-            
+
             while (numgen.Next(2) == 0 || height < max)
             {
                 height++;
@@ -35,17 +35,17 @@ namespace ShoppingList
 
         class Node
         {
-            
-            T Value;
-            public List<Node> Neighbors;
-            public int Height => Neighbors.Count;
+
+            public T Value;
+            public Node[] Neighbors;
+            public int Height => Neighbors.Length;
             public Node(T value, int height)
             {
                 this.Value = value;
-                Neighbors = new List<Node>(height);
+                Neighbors = new Node[height];
                 for (int i = 0; i < height; i++)
                 {
-                    Neighbors.Add(null);
+                    Neighbors[i] = null;
                 }
             }
         }
@@ -61,24 +61,39 @@ namespace ShoppingList
         public void Add(T item)
         {
             var newNode = new Node(item, ChooseRandom(Head.Height + 1));
-
-            if(newNode.Height > Head.Height)
-            {
-                Head.Neighbors.Add(newNode);
-            }
-
+            Node temp = new Node(item, ChooseRandom(Head.Height + 1));
             var curr = Head; //if smaller change current
-            int level = Head.Neighbors.Count - 1; //if bigger (or null) link new node if possible, move down
-            while(level >= 0)
+            int level = Head.Neighbors.Length - 1; //if bigger (or null) link new node if possible, move down
+            while (level >= 0)
             {
-                
+                int comparison = curr.Neighbors[level] == null ? 1 : Comparer.Compare(curr.Neighbors[level].Value, item);
+
+                if (comparison > 0)
+                {
+                    //link and move down
+                    if (temp.Height > level)
+                    {
+                        temp.Neighbors[level] = curr.Neighbors[level];
+                        curr.Neighbors[level] = temp;
+                    }
+                    level--;
+                }
+                else if (comparison < 0)
+                {
+                    //move right
+                    curr = curr.Neighbors[level];
+                }
+                else if (comparison == 0)
+                {
+                    throw new Exception("No Duplicates haha alex tis bad");
+                }
+
             }
         }
-        
+
         public void Clear()
         {
-            Head.Neighbors = new List<Node>();
-            Head.Neighbors.Add(null);
+            Head = null;
             Count = 0;
         }
 
@@ -99,7 +114,48 @@ namespace ShoppingList
 
         public bool Remove(T item)
         {
-            throw new NotImplementedException();
+            bool removal = false;
+            Node temp = new Node(item, ChooseRandom(Head.Height + 1));
+            var curr = Head; //if smaller change current
+            int level = Head.Neighbors.Length - 1; //if bigger (or null) link new node if possible, move down
+            while (level >= 0)
+            {
+                int comparison = curr.Neighbors[level] == null ? 1 : Comparer.Compare(curr.Neighbors[level].Value, item);
+
+                if (comparison > 0)
+                {
+                    //link and move down
+                    if (temp.Height > level)
+                    {
+                        temp.Neighbors[level] = curr.Neighbors[level];
+                        curr.Neighbors[level] = temp;
+                    }
+                    level--;
+                }
+                else if (comparison < 0)
+                {
+                    //move right
+                    curr = curr.Neighbors[level];
+                }
+                else if (comparison == 0)
+                {
+
+                    removal = true;
+
+                    curr.Neighbors[0] = curr.Neighbors[0].Neighbors[0];
+                    level--;
+                    //delete here
+                }
+
+            }
+
+
+            if (removal)
+            {
+                Count--;
+
+            }
+            return removal;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -108,3 +164,7 @@ namespace ShoppingList
         }
     }
 }
+
+
+
+//lol hi

@@ -16,14 +16,14 @@ namespace ShoppingList
             Mylist<string> input;
             string userinput = "";
             input = new Mylist<string>();
-            HeapTree<int> Tree;
-            Tree = new HeapTree<int>();
+            SkipList<int> Tree;
+            Tree = new SkipList<int>();
 
             for (int i = 10; i > 0 ; i--)
             {
-                Tree.insert(i);
+                Tree.Add(i);
             }
-            Tree.pop();
+            
 
 
 
