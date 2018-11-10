@@ -24,7 +24,7 @@ namespace ShoppingList
         {
             int height = 1;
 
-            while (numgen.Next(2) == 0 || height < max)
+            while (numgen.Next(2) == 0 && height < max)
             {
                 height++;
             }
@@ -64,7 +64,7 @@ namespace ShoppingList
         {
             Node temp = new Node(item, ChooseRandom(Head.Height + 1));
 
-            if(temp.Height > Head.Height)
+            if (temp.Height > Head.Height)
             {
                 Node[] tmp = new Node[Head.Neighbors.Length + 1];
 
@@ -73,7 +73,6 @@ namespace ShoppingList
                     tmp[i] = Head.Neighbors[i];
                 }
                 Head.Neighbors = tmp;
-
                 //increase the size of the head neighbors array*
             }
 
@@ -104,6 +103,8 @@ namespace ShoppingList
                 }
 
             }
+
+            Count++;
         }
 
         public void Clear()
@@ -135,19 +136,29 @@ namespace ShoppingList
                 }
             }
             return false;
-         
-            
+
+
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array == null)
+            {
+                throw new ArgumentNullException("array");
+            }
+            if (array.Length < Count + arrayIndex)
+            {
+                throw new ArgumentException("alex is oof and array too long");
+            }
+            foreach (var value in this)
+            {
+                array[arrayIndex] = value;
+                arrayIndex++;
+            }
+           
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+
         //enum thing ***
         public bool Remove(T item)
         {
@@ -187,12 +198,17 @@ namespace ShoppingList
             return removal;
         }
 
+        public IEnumerator<T> GetEnumerator()
+        {
+            for (Node current = Head.Neighbors[0]; current.Neighbors[0] != null; current = current.Neighbors[0])
+            {
+                yield return current.Value;
+            }
+        }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
-
-            //yield return each value in the skip list
-            //travel along level 0
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }

@@ -22,12 +22,10 @@ namespace ShoppingList
                 Tree.Add(i);
             }
             Tree.Contains(3);
+
+
+            Tree.Remove(5);
             
-
-
-
-            
-
             Console.ReadKey();
 
         }
