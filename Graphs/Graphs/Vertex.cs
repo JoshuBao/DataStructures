@@ -11,6 +11,7 @@ namespace Graphs
         //Vertex Properties
         public T Value;
         public bool Visited = false;
+        public Vertex<T> Founder = null;
 
         //Vertex Functions
         public Vertex(T value)
@@ -66,8 +67,9 @@ namespace Graphs
             Path.Push(Start);
             while (Path.Count > 0)
             {
-                Path.Peek().Visited = true;
-                if (Path.Peek() == End)
+                Vertex<T> curr = Path.Peek();
+                curr.Visited = true;
+                if (curr == End)
                 {
                     return Path.Reverse();
                 }
@@ -76,12 +78,12 @@ namespace Graphs
                 bool pushOccured = false;
                 for (int i = 0; i < Edge.Count; i++)
                 {
-                    if (Edge[i].A == Path.Peek() && Edge[i].B.Visited == false)
+                    if (Edge[i].A == curr && Edge[i].B.Visited == false)
                     {
                         pushOccured = true;
                         Path.Push(Edge[i].B);
                     }
-                    else if (Edge[i].B == Path.Peek() && Edge[i].A.Visited == false)
+                    else if (Edge[i].B == curr && Edge[i].A.Visited == false)
                     {
                         pushOccured = true;
                         Path.Push(Edge[i].A);
@@ -92,12 +94,10 @@ namespace Graphs
                 {
                     Path.Pop();
                 }
-
-                return Path;
             }
 
             return null;
-            //set all verticies to visited*
+            //set all verticies to unvisited
 
             //Stack 
             //push start to the stack*
@@ -111,8 +111,66 @@ namespace Graphs
             //  if there are NO unvisted neighbors, pop
 
         }
+        public IEnumerable<Vertex<T>> BreadthFirstSearch(Vertex<T> Start, Vertex<T> End)
+        {
+            Queue<Vertex<T>> Searching;
+            Searching = new Queue<Vertex<T>>();
+            for (int i = 0; i < Vertex.Count; i++)
+            {
+                Vertex[i].Visited = false;
+
+            }
+            Searching.Enqueue(Start);
+            while (Searching.Count > 0)
+            {
+                var cur = Searching.Dequeue();
+                cur.Visited = true;
+                for (int i = 0; i < Edge.Count; i++)
+                {
+                    if (Edge[i].A == cur && Edge[i].B.Visited == false && Searching.Contains(Edge[i].B) == false)
+                    {
+
+                        Searching.Enqueue(Edge[i].B);
+                        Edge[i].B.Founder = cur;
+
+                    }
+                    else if (Edge[i].B == cur && Edge[i].A.Visited == false && Searching.Contains(Edge[i].A) == false)
+                    {
+
+                        Searching.Enqueue(Edge[i].A);
+                        Edge[i].A.Founder = cur;
+                    }
+                }
+            }
+
+            Stack<Vertex<T>> temp = new Stack<Vertex<T>>();
+            temp.Push(End);
+            while (temp.Peek() != Start)
+            {
+                temp.Push(temp.Peek().Founder);
+            }
+
+            return temp.Reverse();
+
+
+            //&& - for each while loop wont they technically never end because it will always be greater than 0 (also ask how we are going to know if it didnt wwork at all for the bfs)
+
+
+            //BreadthFirstSearch*
+            //queue*
+            //set all verticies to univisted*
+            //enqueue the start*
+            //while queue is not emtpy*
+            //  dequeue to get the current node [ var cur = queue.Dequeue() ]*
+            //  set the current node to VISITED*
+            //  go through all neighbors*
+            //      if the neighbor is unvisited AND NOT in the queue, add them to the queue AND set their founder to the curr node*
+            //create an enumerable, start at the end and keep adding the founders until start is added*
+            //return the reverse of the created enumerable*
+
+        }
+
+
+
     }
-
-
-
 }
