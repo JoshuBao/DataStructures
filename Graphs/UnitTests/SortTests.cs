@@ -25,12 +25,14 @@ namespace UnitTests
             }
         }
         [TestMethod]
-        public void BST()
+        public void LinkedListTest()
         {
 
+            LinkedList<int> List = new LinkedList<int>();
 
 
 
         }
+
     }
 }

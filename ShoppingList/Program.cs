@@ -21,6 +21,7 @@ namespace ShoppingList
             {
                 Tree.Add(i);
             }
+
             Tree.Contains(3);
 
 
