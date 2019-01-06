@@ -31,7 +31,7 @@ namespace Graphs
             Node<T> currentNode = Head;
             while (currentNode.Next != null)
             {
-                if (Value.Equals(currentNode.Value) || currentNode.Next.Value.Equals(Value))
+                if (Value.Equals(currentNode.Value))
                 {
                     return currentNode;
                 }
@@ -50,19 +50,24 @@ namespace Graphs
         }
         public void Add(T item)
         {
+            count++;
             if (Head == null)
             {
                 Head = new Node<T>(item);
+                return;
             }
-            else
+       
+            var node = Head;
+            var prev = Head;
+            while(node != null)
             {
-                Node<T> NewHead = new Node<T>(item);
-                Node<T> storedvalue = Head;
-                Head = NewHead;
-                NewHead.Next = storedvalue;
+                prev = node;
+                node = node.Next;
             }
-            count++;
-        }
+
+            node = new Node<T>(item);
+            prev.Next = node;
+         }
         public void Clear()
         {
             Head = null;
@@ -109,6 +114,26 @@ namespace Graphs
                 Head = null;
             }
             return false;
+        }
+        public bool IsCirclular()
+        {
+           
+            var cur = Head;
+            var curr = Head.Next;
+            while (curr != cur)
+            {
+                cur = cur.Next.Next;
+                curr = curr.Next;
+                if (cur == null || curr == null)
+                {
+
+                    return false;
+
+                }
+            }
+            return true;
+
+            
         }
         public IEnumerator<T> GetEnumerator()
         {

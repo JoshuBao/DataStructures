@@ -27,11 +27,29 @@ namespace UnitTests
         [TestMethod]
         public void LinkedListTest()
         {
-
+            
             LinkedList<int> List = new LinkedList<int>();
 
+            List.Add(1);
+            List.Add(2);
+            List.Add(3);
+            List.Add(4);
+            
+            var node = List.Find(3);
+            node.Next = List.Find(1);
+
+            //stuf
+           
 
 
+            //at this point 
+            //1->2->3->1 
+            //should be 1->2->3->4
+
+
+
+
+            ;
         }
 
     }
