@@ -3,7 +3,8 @@
 Dijkstra's Algorithm
 
 
-
+1/19/2019
+your done with the ^^ algorithm, just get it checked and finish the loop path comment thing
 
 
 

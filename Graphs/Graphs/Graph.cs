@@ -12,12 +12,12 @@ namespace Graphs
         public T Value;
         public bool Visited = false;
         public Vertex<T> Founder = null;
+        public int Distance;
 
         //Vertex Functions
         public Vertex(T value)
         {
             this.Value = value;
-
         }
 
     }
@@ -25,13 +25,16 @@ namespace Graphs
     //B: Edge -> Vertex A, Vertex B
     public class Edge<T>
     {
+        public int Weight;
         public Vertex<T> A;
         public Vertex<T> B;
 
         public Edge(Vertex<T> a, Vertex<T> b)
         {
+
             this.A = a;
             this.B = b;
+            
         }
 
     }
@@ -53,14 +56,11 @@ namespace Graphs
         public void AddEdge(Vertex<T> A, Vertex<T> B)
         {
             Edge.Add(new Edge<T>(A, B));
-
         }
         public void RemoveEdge(Vertex<T> A, Vertex<T> B)
         {
-
             Edge.Remove(new Edge<T>(A, B));
         }
-
         public IEnumerable<Vertex<T>> DepthFirst(Vertex<T> Start, Vertex<T> End)
         {
             Stack<Vertex<T>> Path = new Stack<Vertex<T>>();
@@ -168,7 +168,86 @@ namespace Graphs
             //create an enumerable, start at the end and keep adding the founders until start is added*
             //return the reverse of the created enumerable*
 
+
+            
+
         }
+        public void Dijkstra(Vertex<T> Start, Vertex<T> End)
+        {
+            List<Vertex<T>> Priority = new List<Vertex<T>>();
+            for (int i = 0; i < Vertex.Count; i++)
+            {
+                Vertex[i].Visited = false;
+            }
+            Start.Distance = 0;
+            Priority.Add(Start);
+            
+            while(Priority.Count > 0)
+            {
+                Vertex<T> curr = null;
+                int min = int.MaxValue;
+                foreach (var vert in Priority)
+                {
+                    if (vert.Distance < min)
+                    {
+                        min = vert.Distance;
+                        curr = vert;
+                    }
+                }
+
+                Priority.Remove(curr);
+
+                foreach (var edge in Edge)
+                {
+                    Vertex<T> neighbor = null;
+                    if(edge.A == curr)
+                    {
+                        neighbor = edge.B;
+                        int tempdist = curr.Distance + neighbor.Distance;
+                        if (tempdist < neighbor.Distance)
+                        {
+                            neighbor.Distance = tempdist;
+                            neighbor.Founder = curr;
+                        }
+                    }
+                    else if (edge.B == curr)
+                    {
+                        neighbor = edge.A;
+                        int tempdist = curr.Distance + neighbor.Distance;
+                        if (tempdist < neighbor.Distance)
+                        {
+                            neighbor.Distance = tempdist;
+                            neighbor.Founder = curr;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if(!neighbor.Visited && !Priority.Contains(neighbor))
+                    {
+                        Priority.Add(neighbor);
+                    }
+                    
+               
+
+                    //calculate temp distance curr.Distance + edgeWeight
+                    //if tempDist < neigh.Dist
+                    //  update the neighbor
+
+
+                }
+                var cur = End;
+                while (curr != Start)
+                {
+                    cur = cur.Founder;
+                }
+                //start at end, loop through founders to generate path
+            }
+
+        }
+
 
 
 
