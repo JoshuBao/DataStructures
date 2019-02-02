@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dijkstra.cs" />
     <Compile Include="LinkedList.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Program.cs" />

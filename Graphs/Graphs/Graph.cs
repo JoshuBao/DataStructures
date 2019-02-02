@@ -34,9 +34,139 @@ namespace Graphs
 
             this.A = a;
             this.B = b;
-            
+
         }
 
+    }
+    public class DirectedGraph<T>
+    {
+        List<Vertex<T>> Vertex = new List<Vertex<T>>();
+        public List<Edge<T>> Edge = new List<Edge<T>>();
+        public void AddVertex(Vertex<T> V)
+        {
+            Vertex.Add(V);
+        }
+        public bool RemoveVertex(Vertex<T> V)
+        {
+            Vertex.Remove(V);
+
+
+        }
+        public void AddEdge(Vertex<T> A, Vertex<T> B)
+        {
+            Edge.Add(new Edge<T>(A, B));
+        }
+        public bool RemoveEdge(Vertex<T> A, Vertex<T> B)
+        {
+            Edge.Remove(new Edge<T>(A, B));
+        }
+        public Vertex<T> search(T value)
+        {
+            for (int i = 0; i < Vertex.Count; i++)
+            {
+                if (Vertex[i].Value.Equals(value))
+                {
+                    return Vertex[i];
+
+                }
+
+            }
+
+            return null;
+        }
+        public Edge<T> search(Vertex<T> A,Vertex<T> B)
+        {
+
+
+        }
+        //add a Vertex<T> search(T value) returns null if the item does not exist
+        //return the vertex if the item exists
+
+        public IEnumerable<Vertex<T>> Dijkstra(Vertex<T> Start, Vertex<T> End)
+        {
+            List<Vertex<T>> Priority = new List<Vertex<T>>();
+            for (int i = 0; i < Vertex.Count; i++)
+            {
+                Vertex[i].Visited = false;
+            }
+            Start.Distance = 0;
+            Priority.Add(Start);
+            while (Priority.Count > 0)
+            {
+                Vertex<T> curr = null;
+                int min = int.MaxValue;
+                foreach (var vert in Priority)
+                {
+                    if (vert.Distance < min)
+                    {
+                        min = vert.Distance;
+                        curr = vert;
+                    }
+                }
+
+                Priority.Remove(curr);
+
+                foreach (var edge in Edge)
+                {
+                    Vertex<T> neighbor = null;
+                    if (edge.A == curr)
+                    {
+                        neighbor = edge.B;
+                        int tempdist = curr.Distance + neighbor.Distance;
+                        if (tempdist < neighbor.Distance)
+                        {
+                            neighbor.Distance = tempdist;
+                            neighbor.Founder = curr;
+                        }
+                    }
+                    else if (edge.B == curr)
+                    {
+                        neighbor = edge.A;
+                        int tempdist = curr.Distance + neighbor.Distance;
+                        if (tempdist < neighbor.Distance)
+                        {
+                            neighbor.Distance = tempdist;
+                            neighbor.Founder = curr;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (!neighbor.Visited && !Priority.Contains(neighbor))
+                    {
+                        Priority.Add(neighbor);
+                    }
+
+
+
+                    //calculate temp distance curr.Distance + edgeWeight
+                    //if tempDist < neigh.Dist
+                    //  update the neighbor
+
+
+                }
+            }
+
+
+            Stack<Vertex<T>> Temp = new Stack<Vertex<T>>();
+            Temp.Push(End);
+            while (Temp.Peek() != Start)
+            {
+                Temp.Push(Temp.Peek().Founder);
+            }
+
+
+            //var cur = End;
+            //while (curr != Start)
+            //{
+            //    cur = cur.Founder;
+            //}
+            //start at end, loop through founders to generate path
+
+            return Temp;
+        }
     }
     public class UndirectedGraph<T>
     {
@@ -169,10 +299,10 @@ namespace Graphs
             //return the reverse of the created enumerable*
 
 
-            
+
 
         }
-        public void Dijkstra(Vertex<T> Start, Vertex<T> End)
+        public IEnumerable<Vertex<T>> Dijkstra(Vertex<T> Start, Vertex<T> End)
         {
             List<Vertex<T>> Priority = new List<Vertex<T>>();
             for (int i = 0; i < Vertex.Count; i++)
@@ -181,8 +311,7 @@ namespace Graphs
             }
             Start.Distance = 0;
             Priority.Add(Start);
-            
-            while(Priority.Count > 0)
+            while (Priority.Count > 0)
             {
                 Vertex<T> curr = null;
                 int min = int.MaxValue;
@@ -200,7 +329,7 @@ namespace Graphs
                 foreach (var edge in Edge)
                 {
                     Vertex<T> neighbor = null;
-                    if(edge.A == curr)
+                    if (edge.A == curr)
                     {
                         neighbor = edge.B;
                         int tempdist = curr.Distance + neighbor.Distance;
@@ -225,12 +354,12 @@ namespace Graphs
                         continue;
                     }
 
-                    if(!neighbor.Visited && !Priority.Contains(neighbor))
+                    if (!neighbor.Visited && !Priority.Contains(neighbor))
                     {
                         Priority.Add(neighbor);
                     }
-                    
-               
+
+
 
                     //calculate temp distance curr.Distance + edgeWeight
                     //if tempDist < neigh.Dist
@@ -238,18 +367,25 @@ namespace Graphs
 
 
                 }
-                var cur = End;
-                while (curr != Start)
-                {
-                    cur = cur.Founder;
-                }
-                //start at end, loop through founders to generate path
             }
 
+
+            Stack<Vertex<T>> Temp = new Stack<Vertex<T>>();
+            Temp.Push(End);
+            while (Temp.Peek() != Start)
+            {
+                Temp.Push(Temp.Peek().Founder);
+            }
+
+
+            //var cur = End;
+            //while (curr != Start)
+            //{
+            //    cur = cur.Founder;
+            //}
+            //start at end, loop through founders to generate path
+
+            return Temp;
         }
-
-
-
-
     }
 }

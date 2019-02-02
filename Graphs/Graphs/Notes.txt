@@ -7,6 +7,20 @@ Dijkstra's Algorithm
 your done with the ^^ algorithm, just get it checked and finish the loop path comment thing
 
 
+Unit Test Airport-ALEXISBAD:
+Read the given txt file called AirportProblem
+The first line is telling you how many paths to check
+The lines after that are the paths from start to end
+After the paths if is just the edges (start,end,distance)
+Create a graph using the edges given to you
+Then do Dijkstra from the start to end for each path and see if it matches up with the given paths
+
+
+2/2/2019
+ //add a Vertex<T> search(T value) returns null if the item does not exist
+        //return the vertex if the item exists
+
+		your doing airport thing, and then apply it to the unit test ^^^^ airport project
 
 
 

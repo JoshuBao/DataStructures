@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using Graphs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
+
     [TestClass]
     public class SortTests
     {
@@ -49,8 +51,27 @@ namespace UnitTests
 
 
 
-            ;
+            
         }
+
+    }
+    [TestClass]
+    public class PathFindingNemo
+    {
+        [TestMethod]
+        public void Dijkstra()
+        {
+            string[] lines = File.ReadAllLines("ALEXISBAD.txt");
+            UndirectedGraph<int> Graph = new UndirectedGraph<int>();
+            int path = int.Parse(lines[0]);
+        }
+
+
+
+       
+
+
+
 
     }
 }
