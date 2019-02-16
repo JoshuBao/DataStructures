@@ -41,24 +41,43 @@ namespace Graphs
     public class DirectedGraph<T>
     {
         List<Vertex<T>> Vertex = new List<Vertex<T>>();
-        public List<Edge<T>> Edge = new List<Edge<T>>();
+        public List<Edge<T>> Edges = new List<Edge<T>>();
         public void AddVertex(Vertex<T> V)
         {
-            Vertex.Add(V);
+            if (search(V.Value) == null)
+            {
+                Vertex.Add(V);
+            }
+            else
+            {
+
+                throw new Exception("'I like to put my sh** agaisnt the wall'-Alex 2019");
+            }
         }
         public bool RemoveVertex(Vertex<T> V)
         {
-            Vertex.Remove(V);
+            return Vertex.Remove(V);
 
 
         }
         public void AddEdge(Vertex<T> A, Vertex<T> B)
         {
-            Edge.Add(new Edge<T>(A, B));
+            if (search(A, B) == null)
+            {
+                Edges.Add(new Edge<T>(A, B));
+
+            }
+            else
+            {
+
+                throw new Exception("Alex wants a standing desk but without standing");
+            }
+            
+
         }
         public bool RemoveEdge(Vertex<T> A, Vertex<T> B)
         {
-            Edge.Remove(new Edge<T>(A, B));
+            return Edges.Remove(new Edge<T>(A, B));
         }
         public Vertex<T> search(T value)
         {
@@ -76,6 +95,19 @@ namespace Graphs
         }
         public Edge<T> search(Vertex<T> A,Vertex<T> B)
         {
+            for (int i = 0; i < Edges.Count; i++)
+            {
+                if (Edges[i].A == A && Edges[i].B == B)
+                {
+                    return Edges[i];
+
+                }
+            }
+
+
+            return null;
+
+
 
 
         }
@@ -106,7 +138,7 @@ namespace Graphs
 
                 Priority.Remove(curr);
 
-                foreach (var edge in Edge)
+                foreach (var edge in Edges)
                 {
                     Vertex<T> neighbor = null;
                     if (edge.A == curr)

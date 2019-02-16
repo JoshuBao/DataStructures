@@ -55,15 +55,28 @@ namespace UnitTests
         }
 
     }
+
     [TestClass]
     public class PathFindingNemo
     {
         [TestMethod]
         public void Dijkstra()
         {
+            //Airpot
+
+            
             string[] lines = File.ReadAllLines("ALEXISBAD.txt");
-            UndirectedGraph<int> Graph = new UndirectedGraph<int>();
+
+            var Graph = new DirectedGraph<string>();
+
             int path = int.Parse(lines[0]);
+            
+            var CorrectPathes = new string[path][];
+            for (int i = 0; i < path; i++)
+            {
+                CorrectPathes[i] = lines[i + 1].Split(',');
+                
+            }
         }
 
 
