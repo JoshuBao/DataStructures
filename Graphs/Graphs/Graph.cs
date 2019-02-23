@@ -30,10 +30,17 @@ namespace Graphs
         public Vertex<T> B;
 
         public Edge(Vertex<T> a, Vertex<T> b)
+            : this(a, b, 0)
         {
 
-            this.A = a;
-            this.B = b;
+        }
+
+        public Edge(Vertex<T> a, Vertex<T> b, int weight)
+        {
+
+            A = a;
+            B = b;
+            Weight = weight;
 
         }
 
@@ -60,11 +67,11 @@ namespace Graphs
 
 
         }
-        public void AddEdge(Vertex<T> A, Vertex<T> B)
+        public void AddEdge(Vertex<T> A, Vertex<T> B, int Weight)
         {
             if (search(A, B) == null)
             {
-                Edges.Add(new Edge<T>(A, B));
+                Edges.Add(new Edge<T>(A, B, Weight));
 
             }
             else
@@ -77,7 +84,14 @@ namespace Graphs
         }
         public bool RemoveEdge(Vertex<T> A, Vertex<T> B)
         {
-            return Edges.Remove(new Edge<T>(A, B));
+            var edge = search(A, B);
+
+            if (edge == null)
+            {
+                return false;
+            }
+
+            return Edges.Remove(edge);
         }
         public Vertex<T> search(T value)
         {

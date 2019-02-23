@@ -2,6 +2,7 @@
 using System.IO;
 using Graphs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace UnitTests
 {
@@ -77,6 +78,54 @@ namespace UnitTests
                 CorrectPathes[i] = lines[i + 1].Split(',');
                 
             }
+            for (int i = path + 1; i < lines.Length; i++)
+            {
+                string[] temp = lines[i].Split(',');
+
+                if (Graph.search(temp[0]) == null)
+                {
+                    Graph.AddVertex(new Vertex<string>(temp[0]));
+                }
+                //do samething for temp 1
+                if (Graph.search(temp[1]) == null)
+                {
+                    Graph.AddVertex(new Vertex<string>(temp[1]));
+
+                }
+                Graph.AddEdge(Graph.search(temp[0]), Graph.search(temp[1]), int.Parse(temp[2]));
+                
+
+
+            }
+            // why do we use ' instead of "
+            for (int i = 1; i < path + 1; i++)
+            {
+                for (int j = 0; j < path; j++)
+                {
+                    string[] temp = lines[i].Split(',');
+
+                    string[] myPath = Graph.Dijkstra(Graph.search(temp[0]), Graph.search(temp[temp.Length - 1])).ToArray().Select(x => x.Value).ToArray();
+                    
+
+                   // Assert.AreEqual(, CorrectPathes[j]);
+
+                }
+            }
+            
+      
+
+            
+
+
+
+
+
+
+
+
+
+
+
         }
 
 
