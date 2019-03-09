@@ -97,7 +97,7 @@ namespace UnitTests
 
 
             }
-            // why do we use ' instead of "
+            
             for (int i = 1; i < path + 1; i++)
             {
                 for (int j = 0; j < path; j++)
@@ -107,7 +107,7 @@ namespace UnitTests
                     string[] myPath = Graph.Dijkstra(Graph.search(temp[0]), Graph.search(temp[temp.Length - 1])).ToArray().Select(x => x.Value).ToArray();
                     
 
-                   // Assert.AreEqual(, CorrectPathes[j]);
+                    Assert.AreEqual(myPath[j], CorrectPathes[j]);
 
                 }
             }

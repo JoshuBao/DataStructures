@@ -128,12 +128,14 @@ namespace Graphs
         //add a Vertex<T> search(T value) returns null if the item does not exist
         //return the vertex if the item exists
 
-        public IEnumerable<Vertex<T>> Dijkstra(Vertex<T> Start, Vertex<T> End)
+        public IEnumerable<T> Dijkstra(Vertex<T> Start, Vertex<T> End)
         {
             List<Vertex<T>> Priority = new List<Vertex<T>>();
             for (int i = 0; i < Vertex.Count; i++)
             {
                 Vertex[i].Visited = false;
+               
+                Vertex[i].Founder = null; 
             }
             Start.Distance = 0;
             Priority.Add(Start);
@@ -151,14 +153,19 @@ namespace Graphs
                 }
 
                 Priority.Remove(curr);
-
+                curr.Visited = true;
+                if (curr == End)
+                {
+                    break;
+                }
                 foreach (var edge in Edges)
                 {
                     Vertex<T> neighbor = null;
                     if (edge.A == curr)
                     {
+                        
                         neighbor = edge.B;
-                        int tempdist = curr.Distance + neighbor.Distance;
+                        int tempdist = curr.Distance + edge.Weight;
                         if (tempdist < neighbor.Distance)
                         {
                             neighbor.Distance = tempdist;
@@ -168,7 +175,7 @@ namespace Graphs
                     else if (edge.B == curr)
                     {
                         neighbor = edge.A;
-                        int tempdist = curr.Distance + neighbor.Distance;
+                        int tempdist = curr.Distance + edge.Weight;
                         if (tempdist < neighbor.Distance)
                         {
                             neighbor.Distance = tempdist;
@@ -193,6 +200,10 @@ namespace Graphs
 
 
                 }
+
+                
+
+
             }
 
 
@@ -210,8 +221,14 @@ namespace Graphs
             //    cur = cur.Founder;
             //}
             //start at end, loop through founders to generate path
+            List<T> path = new List<T>();
+            while (Temp.Count != 0)
+            {
+                path.Add(Temp.Pop().Value);
 
-            return Temp;
+            }
+
+            return path;
         }
     }
     public class UndirectedGraph<T>
